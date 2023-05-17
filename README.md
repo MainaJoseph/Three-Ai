@@ -19,6 +19,7 @@ Introducing the 3D-Tshirt Customizer! 😎 🤗
 
 - Demo: [https://tshirt-3d.netlify.app/](https://tshirt-3d.netlify.app/)
 - Source Code: [https://github.com/MainaJoseph/Three-Ai](https://github.com/MainaJoseph/Three-Ai)
+- Linkedin Post: https://www.linkedin.com/posts/joseph-mainajm_react-share-project-activity-7064537693036118016-s7Fq?utm_source=share&utm_medium=member_desktop
 
 ## Technology Stack
 
