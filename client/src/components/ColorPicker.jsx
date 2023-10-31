@@ -1,7 +1,10 @@
 import React, { useState, useRef } from "react";
 import { SketchPicker } from "react-color";
 import { useSnapshot } from "valtio";
-import { FaRedoAlt, FaUndo } from "react-icons/fa";
+import { FaRedoAlt, FaUndo, FaRegClipboard } from "react-icons/fa";
+import copy from "clipboard-copy";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import state from "../store";
 
@@ -18,12 +21,12 @@ const ColorPicker = () => {
   const inputStyle = {
     width: "100%",
     borderColor: snap.color,
+    paddingRight: "2rem", // Add right padding for the clipboard icon
   };
 
   const handleColorChange = (color) => {
     const newColor = color.hex;
     if (newColor !== snap.color) {
-      // Add the new color to the history
       colorHistory.current.splice(historyIndex.current + 1);
       colorHistory.current.push(newColor);
       historyIndex.current = colorHistory.current.length - 1;
@@ -45,6 +48,11 @@ const ColorPicker = () => {
     }
   };
 
+  const copyColorCode = () => {
+    copy(snap.color);
+    toast.success("Color code copied!");
+  };
+
   return (
     <div className="absolute left-full ml-3">
       <SketchPicker
@@ -61,14 +69,37 @@ const ColorPicker = () => {
           {displayColorCode ? "Hide Color Code" : "Show Color Code"}
         </button>
         {displayColorCode && (
-          <div className="mt-2">
-            <input
-              type="text"
-              value={snap.color}
-              onChange={(e) => handleColorChange({ hex: e.target.value })}
-              className="border rounded-md p-2 text-center font-semibold"
-              style={inputStyle}
-            />
+          <div className="mt-2" style={{ position: "relative" }}>
+            <div style={{ display: "flex", position: "relative" }}>
+              <input
+                type="text"
+                value={snap.color}
+                onChange={(e) => handleColorChange({ hex: e.target.value })}
+                className="border rounded-md p-2 text-center font-semibold"
+                style={inputStyle}
+              />
+              <div
+                onClick={copyColorCode}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  position: "absolute",
+                  right: "8px", // Adjust the right position as needed
+                  cursor: "pointer",
+                }}
+              >
+                <FaRegClipboard className="mt-2" size={25} />
+              </div>
+            </div>
+            <div>
+              <ToastContainer
+                position="top-left"
+                draggable:true
+                className="mr-6"
+                autoClose={3000}
+                theme="dark"
+              />
+            </div>
           </div>
         )}
         <div className="mt-2 flex items-center">
@@ -80,7 +111,7 @@ const ColorPicker = () => {
           </button>
           <button
             onClick={redo}
-            className="text-white bg-gray-400 hover-bg-gray-500 py-2 px-3 rounded"
+            className="text-white bg-gray-400 hover-bg-gray-500 py-2 px-3 rounded mr-2"
           >
             <FaRedoAlt />
           </button>
